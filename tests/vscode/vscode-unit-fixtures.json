@@ -1,0 +1,250 @@
+{
+  "sourceCommit": "dd35b1a25b6a4096e50ca2af18d9f82b41925b5a",
+  "cases": [
+    {
+      "name": "one inserted line below",
+      "original": "line",
+      "modified": "line\nnew line"
+    },
+    {
+      "name": "two inserted lines below",
+      "original": "line",
+      "modified": "line\nnew line\nanother new line"
+    },
+    {
+      "name": "one inserted line above",
+      "original": "line",
+      "modified": "new line\nline"
+    },
+    {
+      "name": "two inserted lines above",
+      "original": "line",
+      "modified": "new line\nanother new line\nline"
+    },
+    {
+      "name": "one inserted line in middle",
+      "original": "line1\nline2\nline3\nline4",
+      "modified": "line1\nline2\nnew line\nline3\nline4"
+    },
+    {
+      "name": "two inserted lines in middle",
+      "original": "line1\nline2\nline3\nline4",
+      "modified": "line1\nline2\nnew line\nanother new line\nline3\nline4"
+    },
+    {
+      "name": "two inserted lines in middle interrupted",
+      "original": "line1\nline2\nline3\nline4",
+      "modified": "line1\nline2\nnew line\nline3\nanother new line\nline4"
+    },
+    {
+      "name": "one deleted line below",
+      "original": "line\nnew line",
+      "modified": "line"
+    },
+    {
+      "name": "two deleted lines below",
+      "original": "line\nnew line\nanother new line",
+      "modified": "line"
+    },
+    {
+      "name": "one deleted lines above",
+      "original": "new line\nline",
+      "modified": "line"
+    },
+    {
+      "name": "two deleted lines above",
+      "original": "new line\nanother new line\nline",
+      "modified": "line"
+    },
+    {
+      "name": "one deleted line in middle",
+      "original": "line1\nline2\nnew line\nline3\nline4",
+      "modified": "line1\nline2\nline3\nline4"
+    },
+    {
+      "name": "two deleted lines in middle",
+      "original": "line1\nline2\nnew line\nanother new line\nline3\nline4",
+      "modified": "line1\nline2\nline3\nline4"
+    },
+    {
+      "name": "two deleted lines in middle interrupted",
+      "original": "line1\nline2\nnew line\nline3\nanother new line\nline4",
+      "modified": "line1\nline2\nline3\nline4"
+    },
+    {
+      "name": "one line changed: chars inserted at the end",
+      "original": "line",
+      "modified": "line changed"
+    },
+    {
+      "name": "one line changed: chars inserted at the beginning",
+      "original": "line",
+      "modified": "my line"
+    },
+    {
+      "name": "one line changed: chars inserted in the middle",
+      "original": "abba",
+      "modified": "abzzba"
+    },
+    {
+      "name": "one line changed: chars inserted in the middle (two spots)",
+      "original": "abba",
+      "modified": "abzzbzza"
+    },
+    {
+      "name": "one line changed: chars deleted 1",
+      "original": "abcdefg",
+      "modified": "abcfg"
+    },
+    {
+      "name": "one line changed: chars deleted 2",
+      "original": "abcdefg",
+      "modified": "acfg"
+    },
+    {
+      "name": "two lines changed 1",
+      "original": "abcd\nefgh",
+      "modified": "abcz"
+    },
+    {
+      "name": "two lines changed 2",
+      "original": "foo\nabcd\nefgh\nBAR",
+      "modified": "foo\nabcz\nBAR"
+    },
+    {
+      "name": "two lines changed 3",
+      "original": "foo\nabcd\nefgh\nBAR",
+      "modified": "foo\nabcz\nzzzzefgh\nBAR"
+    },
+    {
+      "name": "two lines changed 4",
+      "original": "abc",
+      "modified": "\n\naxc\n"
+    },
+    {
+      "name": "empty original sequence in char diff",
+      "original": "abc\n\nxyz",
+      "modified": "abc\nqwe\nrty\nxyz"
+    },
+    {
+      "name": "three lines changed",
+      "original": "foo\nabcd\nefgh\nBAR",
+      "modified": "foo\nzzzefgh\nxxx\nBAR"
+    },
+    {
+      "name": "big change part 1",
+      "original": "foo\nabcd\nefgh\nBAR",
+      "modified": "hello\nfoo\nzzzefgh\nxxx\nBAR"
+    },
+    {
+      "name": "big change part 2",
+      "original": "foo\nabcd\nefgh\nBAR\nRAB",
+      "modified": "hello\nfoo\nzzzefgh\nxxx\nBAR"
+    },
+    {
+      "name": "char change postprocessing merges",
+      "original": "abba",
+      "modified": "azzzbzzzbzzza"
+    },
+    {
+      "name": "ignore trim whitespace",
+      "original": "\t\t foo \nabcd\nefgh\n\t\t BAR\t\t",
+      "modified": "  hello\t\n\t foo   \t\nzzzefgh\nxxx\n   BAR   \t"
+    },
+    {
+      "name": "issue #12122 r.hasOwnProperty is not a function",
+      "original": "hasOwnProperty",
+      "modified": "hasOwnProperty\nand another line"
+    },
+    {
+      "name": "empty diff 1",
+      "original": "",
+      "modified": "something"
+    },
+    {
+      "name": "empty diff 2",
+      "original": "",
+      "modified": "something\nsomething else"
+    },
+    {
+      "name": "empty diff 3",
+      "original": "something\nsomething else",
+      "modified": ""
+    },
+    {
+      "name": "empty diff 4",
+      "original": "something",
+      "modified": ""
+    },
+    {
+      "name": "empty diff 5",
+      "original": "",
+      "modified": ""
+    },
+    {
+      "name": "pretty diff 1",
+      "original": "suite(function () {\n\ttest1() {\n\t\tassert.ok(true);\n\t}\n\n\ttest2() {\n\t\tassert.ok(true);\n\t}\n});\n",
+      "modified": "// An insertion\nsuite(function () {\n\ttest1() {\n\t\tassert.ok(true);\n\t}\n\n\ttest2() {\n\t\tassert.ok(true);\n\t}\n\n\ttest3() {\n\t\tassert.ok(true);\n\t}\n});\n"
+    },
+    {
+      "name": "pretty diff 2",
+      "original": "// Just a comment\n\nfunction compute(a, b, c, d) {\n\tif (a) {\n\t\tif (b) {\n\t\t\tif (c) {\n\t\t\t\treturn 5;\n\t\t\t}\n\t\t}\n\t\t// These next lines will be deleted\n\t\tif (d) {\n\t\t\treturn -1;\n\t\t}\n\t\treturn 0;\n\t}\n}",
+      "modified": "// Here is an inserted line\n// and another inserted line\n// and another one\n// Just a comment\n\nfunction compute(a, b, c, d) {\n\tif (a) {\n\t\tif (b) {\n\t\t\tif (c) {\n\t\t\t\treturn 5;\n\t\t\t}\n\t\t}\n\t\treturn 0;\n\t}\n}"
+    },
+    {
+      "name": "pretty diff 3",
+      "original": "class A {\n\t/**\n\t * m1\n\t */\n\tmethod1() {}\n\n\t/**\n\t * m3\n\t */\n\tmethod3() {}\n}",
+      "modified": "class A {\n\t/**\n\t * m1\n\t */\n\tmethod1() {}\n\n\t/**\n\t * m2\n\t */\n\tmethod2() {}\n\n\t/**\n\t * m3\n\t */\n\tmethod3() {}\n}"
+    },
+    {
+      "name": "issue #23636",
+      "original": "if(!TextDrawLoad[playerid])\n{\n\n\tTextDrawHideForPlayer(playerid,TD_AppleJob[3]);\n\tTextDrawHideForPlayer(playerid,TD_AppleJob[4]);\n\tif(!AppleJobTreesType[AppleJobTreesPlayerNum[playerid]])\n\t{\n\t\tfor(new i=0;i<10;i++) if(StatusTD_AppleJobApples[playerid][i]) TextDrawHideForPlayer(playerid,TD_AppleJob[5+i]);\n\t}\n\telse\n\t{\n\t\tfor(new i=0;i<10;i++) if(StatusTD_AppleJobApples[playerid][i]) TextDrawHideForPlayer(playerid,TD_AppleJob[15+i]);\n\t}\n}\nelse\n{\n\tTextDrawHideForPlayer(playerid,TD_AppleJob[3]);\n\tTextDrawHideForPlayer(playerid,TD_AppleJob[27]);\n\tif(!AppleJobTreesType[AppleJobTreesPlayerNum[playerid]])\n\t{\n\t\tfor(new i=0;i<10;i++) if(StatusTD_AppleJobApples[playerid][i]) TextDrawHideForPlayer(playerid,TD_AppleJob[28+i]);\n\t}\n\telse\n\t{\n\t\tfor(new i=0;i<10;i++) if(StatusTD_AppleJobApples[playerid][i]) TextDrawHideForPlayer(playerid,TD_AppleJob[38+i]);\n\t}\n}",
+      "modified": "\tif(!TextDrawLoad[playerid])\n\t{\n\t\n\t\tTextDrawHideForPlayer(playerid,TD_AppleJob[3]);\n\t\tTextDrawHideForPlayer(playerid,TD_AppleJob[4]);\n\t\tif(!AppleJobTreesType[AppleJobTreesPlayerNum[playerid]])\n\t\t{\n\t\t\tfor(new i=0;i<10;i++) if(StatusTD_AppleJobApples[playerid][i]) TextDrawHideForPlayer(playerid,TD_AppleJob[5+i]);\n\t\t}\n\t\telse\n\t\t{\n\t\t\tfor(new i=0;i<10;i++) if(StatusTD_AppleJobApples[playerid][i]) TextDrawHideForPlayer(playerid,TD_AppleJob[15+i]);\n\t\t}\n\t}\n\telse\n\t{\n\t\tTextDrawHideForPlayer(playerid,TD_AppleJob[3]);\n\t\tTextDrawHideForPlayer(playerid,TD_AppleJob[27]);\n\t\tif(!AppleJobTreesType[AppleJobTreesPlayerNum[playerid]])\n\t\t{\n\t\t\tfor(new i=0;i<10;i++) if(StatusTD_AppleJobApples[playerid][i]) TextDrawHideForPlayer(playerid,TD_AppleJob[28+i]);\n\t\t}\n\t\telse\n\t\t{\n\t\t\tfor(new i=0;i<10;i++) if(StatusTD_AppleJobApples[playerid][i]) TextDrawHideForPlayer(playerid,TD_AppleJob[38+i]);\n\t\t}\n\t}"
+    },
+    {
+      "name": "issue #43922",
+      "original": " * `yarn [install]` -- Install project NPM dependencies. This is automatically done when you first create the project. You should only need to run this if you add dependencies in `package.json`.",
+      "modified": " * `yarn` -- Install project NPM dependencies. You should only need to run this if you add dependencies in `package.json`."
+    },
+    {
+      "name": "issue #42751",
+      "original": "    1\n  2",
+      "modified": "    1\n   3"
+    },
+    {
+      "name": "does not give character changes",
+      "original": "    1\n  2\nA",
+      "modified": "    1\n   3\n A"
+    },
+    {
+      "name": "issue #44422: Less than ideal diff results",
+      "original": "export class C {\n\n\tpublic m1(): void {\n\t\t{\n\t\t//2\n\t\t//3\n\t\t//4\n\t\t//5\n\t\t//6\n\t\t//7\n\t\t//8\n\t\t//9\n\t\t//10\n\t\t//11\n\t\t//12\n\t\t//13\n\t\t//14\n\t\t//15\n\t\t//16\n\t\t//17\n\t\t//18\n\t\t}\n\t}\n\n\tpublic m2(): void {\n\t\tif (a) {\n\t\t\tif (b) {\n\t\t\t\t//A1\n\t\t\t\t//A2\n\t\t\t\t//A3\n\t\t\t\t//A4\n\t\t\t\t//A5\n\t\t\t\t//A6\n\t\t\t\t//A7\n\t\t\t\t//A8\n\t\t\t}\n\t\t}\n\n\t\t//A9\n\t\t//A10\n\t\t//A11\n\t\t//A12\n\t\t//A13\n\t\t//A14\n\t\t//A15\n\t}\n\n\tpublic m3(): void {\n\t\tif (a) {\n\t\t\t//B1\n\t\t}\n\t\t//B2\n\t\t//B3\n\t}\n\n\tpublic m4(): boolean {\n\t\t//1\n\t\t//2\n\t\t//3\n\t\t//4\n\t}\n\n}",
+      "modified": "export class C {\n\n\tconstructor() {\n\n\n\n\n\t}\n\n\tpublic m1(): void {\n\t\t{\n\t\t//2\n\t\t//3\n\t\t//4\n\t\t//5\n\t\t//6\n\t\t//7\n\t\t//8\n\t\t//9\n\t\t//10\n\t\t//11\n\t\t//12\n\t\t//13\n\t\t//14\n\t\t//15\n\t\t//16\n\t\t//17\n\t\t//18\n\t\t}\n\t}\n\n\tpublic m4(): boolean {\n\t\t//1\n\t\t//2\n\t\t//3\n\t\t//4\n\t}\n\n}"
+    },
+    {
+      "name": "gives preference to matching longer lines",
+      "original": "A\nA\nBB\nC",
+      "modified": "A\nBB\nA\nD\nE\nA\nC"
+    },
+    {
+      "name": "issue #119051: gives preference to fewer diff hunks",
+      "original": "1\n\n\n2\n",
+      "modified": "1\n\n1.5\n\n\n2\n\n3\n"
+    },
+    {
+      "name": "issue #121436: Diff chunk contains an unchanged line part 1",
+      "original": "if (cond) {\n    cmd\n}",
+      "modified": "if (cond) {\n    if (other_cond) {\n        cmd\n    }\n}"
+    },
+    {
+      "name": "issue #121436: Diff chunk contains an unchanged line part 2",
+      "original": "if (cond) {\n    cmd\n}",
+      "modified": "if (cond) {\n    if (other_cond) {\n        cmd\n    }\n}"
+    },
+    {
+      "name": "issue #169552: Assertion error when having both leading and trailing whitespace diffs",
+      "original": "if True:\n    print(2)",
+      "modified": "if True:\n\tprint(2) "
+    }
+  ]
+}

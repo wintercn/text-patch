@@ -1,0 +1,154 @@
+{
+  "seed": 1,
+  "originalLength": 17,
+  "editCount": 4,
+  "editLength": 3,
+  "cases": [
+    {
+      "original": "gkotbkvparhlqxg\ny",
+      "result": "gidkophlqxg",
+      "edits": [
+        {
+          "type": "delete",
+          "at": 8,
+          "length": 2
+        },
+        {
+          "type": "insert",
+          "at": 1,
+          "text": "id"
+        },
+        {
+          "type": "delete",
+          "at": 5,
+          "length": 4
+        },
+        {
+          "type": "delete",
+          "at": 11,
+          "length": 2
+        }
+      ],
+      "referenceDistance": 10,
+      "referencePatch": {
+        "ops": [
+          0,
+          2,
+          0,
+          1,
+          0,
+          1,
+          0,
+          1
+        ],
+        "args": [
+          1,
+          2,
+          2,
+          4,
+          1,
+          2,
+          5,
+          2
+        ],
+        "insertText": "id"
+      }
+    },
+    {
+      "original": "ej\nkpn\nyt \nektene",
+      "result": "ej\ntbjdw \nw aektene",
+      "edits": [
+        {
+          "type": "delete",
+          "at": 4,
+          "length": 3
+        },
+        {
+          "type": "delete",
+          "at": 3,
+          "length": 2
+        },
+        {
+          "type": "insert",
+          "at": 4,
+          "text": "bjdw"
+        },
+        {
+          "type": "insert",
+          "at": 10,
+          "text": "w a"
+        }
+      ],
+      "referenceDistance": 12,
+      "referencePatch": {
+        "ops": [
+          0,
+          1,
+          0,
+          1,
+          0,
+          2,
+          0,
+          2,
+          0
+        ],
+        "args": [
+          2,
+          4,
+          1,
+          1,
+          1,
+          4,
+          2,
+          3,
+          6
+        ],
+        "insertText": "bjdww a"
+      }
+    },
+    {
+      "original": "a\nwmks\nunlezurqpb",
+      "result": "suma\nwezur",
+      "edits": [
+        {
+          "type": "delete",
+          "at": 14,
+          "length": 3
+        },
+        {
+          "type": "delete",
+          "at": 3,
+          "length": 3
+        },
+        {
+          "type": "delete",
+          "at": 3,
+          "length": 4
+        },
+        {
+          "type": "insert",
+          "at": 0,
+          "text": "sum"
+        }
+      ],
+      "referenceDistance": 13,
+      "referencePatch": {
+        "ops": [
+          2,
+          0,
+          1,
+          0,
+          1
+        ],
+        "args": [
+          3,
+          3,
+          7,
+          4,
+          3
+        ],
+        "insertText": "sum"
+      }
+    }
+  ]
+}

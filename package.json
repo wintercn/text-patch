@@ -1,0 +1,14 @@
+{
+  "name": "text-patch",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "node --experimental-transform-types --test",
+    "generate:tests": "node scripts/generate-random-cases.mjs"
+  }
+}
