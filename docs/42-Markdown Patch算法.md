@@ -4,9 +4,9 @@
 
 ## 技术选型结论
 
-Text Patch 由项目自行实现，包括行级、字符级两级 Myers 差异计算，Patch 指令生成、序列化和应用。运行时代码不使用 `@sanity/diff-match-patch` 或原始 `diff-match-patch` 的 Patch API。
+Text Patch 由项目自行实现，包括行级、字符级两级 Myers 差异计算，Patch 指令生成、序列化和应用。Myers 是 Eugene W. Myers 提出的序列差异算法；完整计算时，它寻找只用插入和删除操作的最短编辑路径。运行时代码不使用 `@sanity/diff-match-patch` 或原始 `diff-match-patch` 的 Patch API。
 
-Myers 核心依据 Eugene W. Myers 的原论文独立实现。公开接口保持不变；`src/myers.ts` 从原实现的 154 行降至 116 行。现有六项性能测试全部通过；其中无关单行测试使用两侧各 2 万字符，耗时门槛为 2 秒。
+Myers 核心依据 Eugene W. Myers 的[原论文](https://doi.org/10.1007/BF01840446)独立实现。公开接口保持不变；`src/myers.ts` 从原实现的 154 行降至 116 行。现有六项性能测试全部通过；其中无关单行测试使用两侧各 2 万字符，耗时门槛为 2 秒。
 
 该实现作为独立包 `text-patch` 维护，仓库位于 [wintercn/text-patch](https://github.com/wintercn/text-patch)。公开入口包括独立的 `createCharacterPatch`、`createLinePatch`，组合两级的 `createPatch`，以及 `applyPatch`；三种生成函数均返回相同的 `Patch` 结构。npm 包入口是编译后的 ESM JavaScript，并提供 TypeScript 类型声明；源码仍公开在仓库和 npm 包中。
 
@@ -101,7 +101,7 @@ VS Code 的 diff fixtures 也覆盖 Myers 之外的行为。只要用例涉及�
 
 ## 参考资料
 
-- Eugene W. Myers, [An O(ND) Difference Algorithm and Its Variations](https://neil.fraser.name/writing/diff/myers.pdf)。
+- Eugene W. Myers, *An O(ND) Difference Algorithm and Its Variations*（[原论文 PDF](https://neil.fraser.name/writing/diff/myers.pdf)，[期刊 DOI](https://doi.org/10.1007/BF01840446)）。
 - [jsdiff](https://github.com/kpdecker/jsdiff)：基于 Myers 算法的 JavaScript 文本差异实现。
 - [VS Code Myers 实现](https://github.com/microsoft/vscode/blob/main/src/vs/editor/common/diff/defaultLinesDiffComputer/algorithms/myersDiffAlgorithm.ts)、[VS Code diff fixtures](https://github.com/microsoft/vscode/tree/main/src/vs/editor/test/node/diffing/fixtures)。
 - [Google diff-match-patch 测试](https://github.com/google/diff-match-patch/blob/master/javascript/tests/diff_match_patch_test.js)。

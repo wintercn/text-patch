@@ -2,7 +2,7 @@
 
 `text-patch` 将一个 JavaScript 字符串相对于另一字符串的修改表示为可序列化的 Patch。它适合保存或传输 Markdown 等文本的修改，但直接处理的是字符串，不解析 Markdown 语法。运行时不依赖第三方包。
 
-包提供字符级 Myers、行级 Myers 和两者组合的差异生成方式。所有操作长度均以 JavaScript 字符串的 UTF-16 code unit 为单位。
+生成差异时，包可以先比较文本行，再对变化区域细化到字符。两层都使用 Myers 差异算法（Eugene W. Myers，[原论文 PDF](https://neil.fraser.name/writing/diff/myers.pdf)，[期刊 DOI](https://doi.org/10.1007/BF01840446)）：它将文本视为序列，寻找通过插入、删除从原文变成目标文本的编辑路径。为限制计算量，超过容量时会回退为整段替换，因此结果不承诺总是全局最短。所有操作长度均以 JavaScript 字符串的 UTF-16 code unit 为单位。
 
 ## 安装与使用
 

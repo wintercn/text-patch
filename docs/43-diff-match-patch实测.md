@@ -107,7 +107,7 @@ emoji 的序列化路径还有另一个问题。`countUtf8Bytes` 使用 `codePoi
 | `@sanity/diff-match-patch` 的 `makeDiff` | 500 | 500 | 0 |
 | 原始版本的 `diff_main` | 500 | 500 | 0 |
 
-本轮没有发现 Myers 差异计算本身产生错误。已复现的问题集中在 Patch 坐标、Patch 字符串序列化和 Patch 应用阶段。
+本轮没有发现基于 Myers 算法的差异计算本身产生错误。Myers 算法通过插入、删除操作计算两个序列之间的差异。已复现的问题集中在 Patch 坐标、Patch 字符串序列化和 Patch 应用阶段。
 
 ## 结论
 
