@@ -1,14 +1,31 @@
 {
   "name": "text-patch",
   "version": "0.0.0",
-  "private": true,
   "license": "MIT",
   "type": "module",
-  "exports": {
-    ".": "./src/index.ts"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wintercn/text-patch.git"
   },
+  "files": [
+    "dist",
+    "src",
+    "docs"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
   "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepack": "npm run build",
     "test": "node --experimental-transform-types --test",
     "generate:tests": "node scripts/generate-random-cases.mjs"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2"
   }
 }

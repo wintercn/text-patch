@@ -8,7 +8,7 @@ Text Patch 由项目自行实现，包括行级、字符级两级 Myers 差异�
 
 Myers 核心依据 Eugene W. Myers 的原论文独立实现。公开接口保持不变；`src/myers.ts` 从原实现的 154 行降至 116 行。现有六项性能测试全部通过；其中无关单行测试使用两侧各 2 万字符，耗时门槛为 2 秒。
 
-该实现作为独立包 `text-patch` 维护，目录为项目根目录下的 `text-patch`。公开入口包括独立的 `createCharacterPatch`、`createLinePatch`，组合两级的 `createPatch`，以及 `applyPatch`；三种生成函数均返回相同的 `Patch` 结构。
+该实现作为独立包 `text-patch` 维护，仓库位于 [wintercn/text-patch](https://github.com/wintercn/text-patch)。公开入口包括独立的 `createCharacterPatch`、`createLinePatch`，组合两级的 `createPatch`，以及 `applyPatch`；三种生成函数均返回相同的 `Patch` 结构。npm 包入口是编译后的 ESM JavaScript，并提供 TypeScript 类型声明；源码仍公开在仓库和 npm 包中。
 
 排除这两个现成实现的实测依据见[diff-match-patch 实测](43-diff-match-patch实测.md)。
 
@@ -93,7 +93,7 @@ VS Code 的 diff fixtures 也覆盖 Myers 之外的行为。只要用例涉及�
 
 部分相关用例可能需要修改后才能适用于本包，例如提取算法输入，或调整与上游测试入口、结果格式绑定的断言。这些修改必须实际完成，使相关用例能够在本包运行；不能只收集或登记后跳过。迁入时记录原用例与修改后用例的对应关系及修改内容。具体修改方式逐项核对。
 
-本包测试按来源放入 `text-patch/tests/vscode/` 和 `text-patch/tests/google/`，并将随机生成的用例单独放入 `text-patch/tests/generated/`。来源文件、版本和断言改写方式见 `text-patch/tests/README.md`。Google diff-match-patch 虽已归档，其算法相关输入仍用于测试，不采用其运行时 Patch 实现。
+本包测试按来源放入 `tests/vscode/` 和 `tests/google/`，并将随机生成的用例单独放入 `tests/generated/`。来源文件、版本和断言改写方式见[测试文档](../tests/README.md)。Google diff-match-patch 虽已归档，其算法相关输入仍用于测试，不采用其运行时 Patch 实现。
 
 自写测试覆盖标准、边界、Unicode 和极端性能场景。随机生成器默认生成 UTF-16 长度 300 的原文，执行 10 次插入或删除，单次长度以 10 为中心；原文长度、操作次数、操作长度、用例数和种子均可参数化。随机组混合英文、单码点非 BMP 汉字和多码点 emoji，编辑边界按 UTF-16 code unit 选择。Unicode 用例另覆盖代理对中间的差异操作。
 
