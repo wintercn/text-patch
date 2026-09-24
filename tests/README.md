@@ -1,21 +1,47 @@
-# text-patch 测试
+# text-patch tests
 
-运行：在 `text-patch` 目录执行 `npm test`。
+English · [简体中文](https://github.com/wintercn/text-patch/blob/main/tests/README.zh-CN.md)
 
-| 目录 | 上游来源或用途 | 迁入方式 |
+Run `npm test` from the repository root. The suite covers reconstruction, edit-path quality, Unicode boundaries, generated cases, and timed performance cases. Test assets are kept in the repository but excluded from the npm package.
+
+For the Myers diff algorithm mentioned below, see the [algorithm guide](../docs/algorithm.md).
+
+## Imported test material
+
+| Directory | Source | Adaptation and assertions |
 | --- | --- | --- |
-| `vscode/` | VS Code `dd35b1a25b6a4096e50ca2af18d9f82b41925b5a` 的 58 个 diff fixtures、`diffComputer.test.ts` 的 49 个输入对及 `defaultLinesDiffComputer.test.ts` 的 3 个输入对 | 将行数组连接为文本；正反向应用之外，对 58 组默认行级结果验证独立的最短插删距离，要求组合 Patch 的编辑代价不高于行级结果、保留总长度不低于上游 diff 范围之外的未修改文本长度；49 个旧版输入对验证默认和无限容量字符级最短距离；3 个示例按行级或字符级验证最短距离。上游 hunk 的精确位置、移动检测和清理策略不是本包的 Myers 输出契约。上游 MIT 许可见 `LICENSE.txt`。 |
-| `google/` | Google diff-match-patch `62f2e689f498f9c92dbc588c58750addec9b1654` 的 `javascript/tests/diff_match_patch_test.js` | 直接提取字符串对；将显式 diff 元组还原为原文和结果文本。全部 170 组用独立插删距离验证无限容量字符级路径；除原本用于超时测试的缩小样本外，还验证默认字符级路径的最短距离；组合 Patch 的代价不高于行级结果。超时样本缩小 64 倍，模糊匹配样本改为精确输入对。上游 Apache-2.0 许可见 `LICENSE.txt`。 |
-| `generated/` | 本包的随机用例生成器 | 每条用例保存原文、最终结果、随机操作记录，以及仅允许插入和删除的 Levenshtein 动态规划参考路径与最短代价；测试验证参考路径、组合与独立两层 Patch。生成文本包含 CJK 和 emoji。 |
+| `vscode/` | VS Code commit `dd35b1a25b6a4096e50ca2af18d9f82b41925b5a`: 58 diff fixtures, 49 input pairs from `diffComputer.test.ts`, and 3 from `defaultLinesDiffComputer.test.ts` | Line arrays were joined into text. Besides applying patches in both directions, the 58 fixtures check an independently computed shortest insertion/deletion distance for the line result. The combined patch's edit cost must not exceed that line result, and its retained length must be at least the unchanged text outside the upstream diff ranges. The 49 legacy cases check shortest character-level distance with default and unlimited capacity; the 3 remaining examples check shortest line- or character-level distance as appropriate. Exact upstream hunk positions, move detection, and cleanup rules are not this package's output contract. The upstream MIT notice is in [`vscode/LICENSE.txt`](vscode/LICENSE.txt). |
+| `google/` | Google diff-match-patch commit `62f2e689f498f9c92dbc588c58750addec9b1654`, `javascript/tests/diff_match_patch_test.js` | String pairs were extracted directly; explicit diff tuples were reconstructed into source and target strings. All 170 pairs check unlimited-capacity character-level paths against an independent shortest insertion/deletion distance. Default character-level paths are checked as well, except for a scaled-down original timeout case. Combined patch cost must not exceed the line-level result. The timeout sample was scaled down 64-fold, and a fuzzy-match sample became an exact input pair. The upstream Apache-2.0 notice is in [`google/LICENSE.txt`](google/LICENSE.txt). |
+| `generated/` | The package's seeded random-case generator | Each case stores source and target strings, random edit records, and an insertion/deletion-only Levenshtein dynamic-programming reference path and minimum cost. Tests check the reference path, the combined patch, and both standalone layers. Generated text includes CJK and emoji. |
 
-本包自写用例另覆盖标准场景、空串/首尾/换行及非法容量参数等边界；`applyPatch` 仅测试符合 `Patch` 约定的输入，不断言非法 Patch 的行为。`unicode.test.mjs` 单独覆盖中文多行编辑、单码点非 BMP 汉字、emoji 插入删除、肤色修饰符、ZWJ 序列、旗帜及变体选择符，检查正确还原、JSON 往返和 UTF-16 长度。`patch.test.mjs` 还检查代理对中间的 code unit 差异操作、两层独立容量和单行局部回退。`scenarios.test.mjs` 检查未终止末行、两端细化、相似度阈值和多行缩为一行；`vscode/fixtures.test.mjs` 另以 `subword` 验证原末行被保留，且组合编辑代价达到独立计算的字符级最短距离。上游 hunk 位置不能直接作为本包断言：相同最短距离可以对应不同位置，上游的启发式分段有时也非最短，末尾换行的行模型亦不同；因此保留其未修改文本长度作为质量下界，并以独立最短距离验证行级路径。
+## Local assertions
 
-极端性能测试按两级 Myers 分为单行和多行，数据使用固定种子且不含 CJK/emoji；数据生成不计入 `createPatch` 耗时。原有四组为 100 万字符、1000 次分散编辑的单行（2 秒），5000 字符独立文本（显式 `characterDiffCapacity = 3000`，2 秒），约 320 万字符、500 次分散编辑的多行（1 秒），以及约 260 万字符、1000 次编辑的重复 Markdown 块（2 秒），均验证应用结果和非平凡操作数量。新增两组为各 20000 字符的无关单行文本与各 250 行的无关多行文本，使用默认容量，断言整串替换、应用正确且计算不超过 2 秒；前者验证容量回退，后者验证行级结果。秒数是当前测试环境的验收门槛，不代表其他设备的性能保证。
+The package's own tests cover ordinary edits, empty strings, beginning/end edits, newline variants, and invalid capacity arguments. `applyPatch` is tested with valid `Patch` values; malformed patches have no asserted behavior. `unicode.test.mjs` covers Chinese multiline edits, single-code-point non-BMP Han characters, emoji insertion/deletion, skin-tone modifiers, ZWJ sequences, flags, variation selectors, JSON round trips, and UTF-16 lengths. `patch.test.mjs` covers edits between surrogate code units, independent capacities, and local character-level fallback. `scenarios.test.mjs` covers unterminated final lines, refinement from both ends, the similarity threshold, and many lines shrinking to one. The VS Code `subword` fixture checks preservation of the original final line and the independently computed shortest character-level cost.
 
-随机用例：
+Upstream hunk positions are not used as exact assertions: equally short edit paths can choose different positions, upstream heuristic segmentation is sometimes non-minimal, and final-newline line models differ. The adapted tests instead preserve upstream unchanged-text length as a quality lower bound and use independent shortest distances for the applicable layer.
+
+## Performance cases
+
+Timed tests exercise both levels and assert correctness as well as elapsed time. Input generation is excluded from the measured duration. The fixed-seed performance data uses no CJK or emoji.
+
+- One million characters in one line with 1,000 scattered edits: 2 seconds.
+- 5,000 mostly independent characters with explicit `characterDiffCapacity = 3000`: 2 seconds.
+- Two unrelated 5,000-character single-line strings with default capacity: whole replacement within 2 seconds.
+- About 3.2 million characters across many lines with 500 scattered edits: 1 second.
+- About 2.6 million characters of repeated Markdown blocks with 1,000 edits: 2 seconds.
+- Two unrelated 20,000-character single-line strings with default capacity: whole replacement within 5 seconds.
+- Two unrelated 250-line strings with default capacity: whole replacement within 2 seconds.
+
+The scattered-edit and explicit fine-diff cases also assert nontrivial edit structure. These limits are acceptance thresholds for the test environment, not performance guarantees for other machines.
+
+## Generate random cases
 
 ```sh
 npm run generate:tests -- --original-length=300 --edit-count=10 --edit-length=10 --cases=100 --seed=20260923
 ```
 
-这五个数字均可调整。`--original-length` 是原文 UTF-16 code unit 的准确长度，`--edit-length` 是单次操作长度的中心值（实际长度约为该值的 50%～150%）。随机文本混合英文、单码点非 BMP 汉字和多码点 emoji；编辑位置与长度按 UTF-16 code unit 选择，可能落在代理对中间。生成器保存的参考路径按 UTF-16 code unit 计算；测试另以整行为元素计算行级最短代价，组合结果则按行级路径、两侧逐行配对及剩余中间整块替换独立计算参考代价，不要求组合结果达到全局字符级最短。配对行的插删距离由 Levenshtein 动态规划计算，与运行时 Myers 实现独立。由于最短路径可能不唯一，测试比较插入、删除总代价，不比较操作数组是否与参考路径逐项相同。相同种子产生相同用例；输出为 `generated/` 下单独的 JSON 文件，已有同名文件不会被覆盖。生成后运行 `npm test` 即会自动读取。
+All five numbers are configurable. `--original-length` is the exact source length in UTF-16 code units. `--edit-length` is the center of the edit-length range; actual lengths are approximately 50%–150% of it. Generated strings mix English, single-code-point non-BMP Han characters, and multi-code-point emoji. Edit positions and lengths are chosen in UTF-16 units and may split a surrogate pair.
+
+The saved reference path uses UTF-16 code units. Tests also compute a shortest line-level cost with whole lines as elements. For the combined algorithm, an independent reference follows the line path, refinement from both ends, and coarse replacement of the remaining middle; it does not require a globally shortest character-level result. Paired-line insertion/deletion distances come from Levenshtein dynamic programming, independently of the runtime Myers implementation. Since minimum paths need not be unique, tests compare total insertion and deletion cost, not operation arrays element by element.
+
+The same seed produces the same cases. Each run writes a separate JSON file in `generated/`; an existing file with the same name is not overwritten. `npm test` automatically reads generated cases.

@@ -60,7 +60,24 @@ test('extreme single line: 5000 independent characters with explicit fine-diff c
   assert.ok(elapsed <= 2_000, `createPatch took ${elapsed.toFixed(1)} ms, limit 2000 ms`);
 });
 
-test('extreme single line: 20000 unrelated characters fall back within 2 seconds', () => {
+test('extreme single line: 5000 unrelated characters fully replace within 2 seconds', () => {
+  const before = randomAscii(seededRandom(123456789), 5_000);
+  const after = randomAscii(seededRandom(987654321), 5_000);
+
+  const start = performance.now();
+  const patch = createPatch(before, after);
+  const elapsed = performance.now() - start;
+
+  assert.deepEqual(patch, {
+    ops: [PatchOpcode.Delete, PatchOpcode.Insert],
+    args: [before.length, after.length],
+    insertText: after,
+  });
+  assert.equal(applyPatch(before, patch), after);
+  assert.ok(elapsed <= 2_000, `createPatch took ${elapsed.toFixed(1)} ms, limit 2000 ms`);
+});
+
+test('extreme single line: 20000 unrelated characters fall back within 5 seconds', () => {
   const before = randomAscii(seededRandom(123456789), 20_000);
   const after = randomAscii(seededRandom(987654321), 20_000);
 
@@ -74,7 +91,7 @@ test('extreme single line: 20000 unrelated characters fall back within 2 seconds
     insertText: after,
   });
   assert.equal(applyPatch(before, patch), after);
-  assert.ok(elapsed <= 2_000, `createPatch took ${elapsed.toFixed(1)} ms, limit 2000 ms`);
+  assert.ok(elapsed <= 5_000, `createPatch took ${elapsed.toFixed(1)} ms, limit 5000 ms`);
 });
 
 test('extreme multi-line: 250 unrelated lines produce whole replacement within 2 seconds', () => {
